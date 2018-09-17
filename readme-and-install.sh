@@ -6,8 +6,8 @@
 # commands
 SUDO=/usr/bin/sudo
 INSTALL=/usr/bin/install
-PORT=/opt/local/bin/port
 CPAN=/usr/bin/cpan
+BREW=/usr/local/bin/brew
 GPG=/usr/local/bin/gpg
 CURL=/usr/bin/curl
 OPEN=/usr/bin/open
@@ -59,7 +59,7 @@ This install script installs and configures an macOS Firewall and Privatizing
 Proxy. It will:
 
 	* Prompt you to install Apple's Xcode Command Line Tools and
-	  Macports <https://www.macports.org/> Uses Macports to
+	  HomeBrew <https://brew.sh/> Uses HomeBrew to
 	* Download and install several key utilities and applications
 	  (wget gnupg p7zip squid privoxy nmap)
 	* Configure macOS's PF native firewall (man pfctl, man pf.conf),
@@ -141,15 +141,11 @@ then
 fi
 
 # Install MacPorts
-#if ! [ -x $PORT ]
-#then
-#    $OPEN -a Safari https://www.macports.org/install.php
-#    $CAT <<MACPORTS
-#Please download and install Macports from https://www.macports.org/install.php
-#then run this script again.
-#MACPORTS
-#    exit 1
-#fi
+if ! [ -x $BREW ]
+then
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    exit 1
+fi
 
 # Install stack for adblock2privoxy
 # https://docs.haskellstack.org/en/stable/install_and_upgrade/
@@ -158,13 +154,9 @@ then
     $CURL -sSL https://get.haskellstack.org/ | $SH
 fi
 
-# Proxy settings in /opt/local/etc/macports/macports.conf
-#$SUDO $PORT selfupdate
 
 # Install wget, gnupg, 7z, pcre, proxies, perl, and python modules
-#$SUDO $PORT uninstall squid && $SUDO $PORT clean --dist squid
-#$SUDO $PORT install wget gnupg p7zip pcre squid3 privoxy nginx nmap python36 py36-scikit-learn py36-matplotlib py36-numpy
-#$SUDO $PORT select --set python3 python36
+$BREW install wget gnupg p7zip pcre squid privoxy nginx nmap
 $SUDO $CPAN install
 $SUDO $CPAN -i Data::Validate::IP
 $SUDO $CPAN -i Data::Validate::Domain

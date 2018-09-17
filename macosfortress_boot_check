@@ -5,7 +5,7 @@
 # commands
 SUDO=/usr/bin/sudo
 LAUNCHCTL=/bin/launchctl
-PORT=/opt/local/bin/port
+BREW=/usr/local/bin/brew
 PFCTL=/sbin/pfctl
 HEAD=/usr/bin/head
 TAIL=/usr/bin/tail
@@ -21,14 +21,14 @@ fi
 # squid
 # make sure there aren't multiple squid jobs running
 if ! [[ `$SUDO $LSOF -i ':3128' | $TAIL -1` && `ps -ef | grep "/opt/local/sbin/squid -s" | grep -v grep | wc -l` -eq 1 ]]; then
-    $SUDO $PORT unload squid3
+    $BREW services stop squid
     $SUDO $KILLALL 'squid'
     $SUDO $KILLALL '(squid-1)'
-    $SUDO $PORT load squid3
+    $BREW services start squid
 fi
 
 # privoxy
 if ! [[ `$SUDO $LSOF -i ':8118' | $TAIL -1` ]]; then
-    $SUDO $PORT unload privoxy
-    $SUDO $PORT load privoxy
+    $BREW services stop privoxy
+    $BREW services stop privoxy
 fi

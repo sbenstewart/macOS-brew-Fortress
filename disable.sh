@@ -7,7 +7,7 @@
 
 # commands
 SUDO=/usr/bin/sudo
-PORT=/usr/local/bin/port
+BREW=/usr/local/bin/brew
 LAUNCHCTL=/bin/launchctl
 PFCTL=/sbin/pfctl
 KILLALL=/usr/bin/killall
